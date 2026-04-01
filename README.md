@@ -96,15 +96,23 @@ Testing documentation is in the `/Testing` directory, covering:
 
 ---
 
-## Team
+## My Contribution
+
+**Yahya Mukhtar (ym196)** — Progress Bar & Course Completion Tracking
+
+Designed and implemented the end-to-end course progress system, allowing users to navigate from the dashboard to a course page, progress through individual tasks, and complete courses. Course completion is a hard requirement for unlocking ratings and comments, making this a core feature that the rest of the platform depends on.
+
+---
+
+## Full Team
 
 Built by a team of 9 developers working in an Agile Scrum environment across 2 sprints.
 
 | Feature | Developer |
 |---|---|
+| **Progress Bar** | **Yahya Mukhtar (ym196)** |
 | Dashboard Revision | ar581 |
 | Favourites Tab | aa1376 |
-| Progress Bar | ym196 |
 | Comments & Ratings | yz658 |
 | Popular Courses | jgs23 |
 | Global Leaderboard | ap828, anaas1 |
