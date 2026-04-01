@@ -1,0 +1,234 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+  <script src="https://kit.fontawesome.com/ea5cbdcda6.js" crossorigin="anonymous"></script>
+</head>  <style>
+    *{
+      margin:0;
+      padding: 0;
+      outline: none;
+      border: none;
+      text-decoration: none !important;
+      box-sizing:border-box;
+      font-family: "IBM Plex Sans", sans-serif;
+    }
+
+    /* Scrollbar CSS */
+    /* REF - https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp*/
+    ::-webkit-scrollbar {
+      height: 5px;
+      width: 5px;
+      border-radius: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 20px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 20px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    body {
+      text-align: center; /* Center align all content */
+      padding-top: 50px; /* Add padding to the top of the body to prevent overlap */
+      background-color: #fff; /* Changed background color to white */
+    }
+
+    nav{
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left:0;
+      height: 100%;
+      width:100px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(1px);
+    }
+
+    .nav-button {
+      width: 100%;
+      height: 80px;
+      font-size: 25px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(1px);
+      position: relative;
+      color: #000;
+      padding: 5px;
+    }
+
+    .nav-button:hover {
+      background: rgba(0, 0, 0, 0.7);
+      color: #fff;
+    }
+
+    .nav-button i {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .nav-button:hover i {
+      color: rgba(255, 255, 255, 1); /* Show the icon on hover */
+    }
+
+    .current-nav-button{
+      color: white;
+      background: rgba(0,0,0,0.7);
+      width: 100%;
+      height: 90px;
+      font-size: 25px;
+    }
+    .current-nav-button:hover {
+      color: white; /* Keep the text color white */
+      background: rgba(0, 0, 0, 0.7); /* Keep the background color transparent black */
+    }
+
+    ul{
+      margin-top:40px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="radio"] {
+      margin-right: 5px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .error-message {
+      display: none;
+      color: red;
+    }
+  </style>
+<body>
+
+<nav>
+  <ul>
+    <li>
+      <a href="/dashboard">
+        <button class="nav-button">
+          <i class="fa-solid fa-house"></i>
+        </button>
+      </a>
+    </li>
+    <li>
+      <a href="/viewCourses">
+        <button class="nav-button">
+          <i class="fa-solid fa-book"></i>
+        </button>
+      </a>
+    </li>
+    <li>
+      <a href="/viewBadges">
+        <button class="nav-button">
+          <i class="fa-solid fa-medal"></i>
+        </button>
+      </a>
+    </li>
+    <li>
+      <a href="/dailyChallenge">
+        <button class="current-nav-button">
+          <i class="fa-solid fa-brain"></i>
+        </button>
+      </a>
+    </li>
+    <li>
+      <a href="/popularpage">
+        <button class="nav-button">
+          <i class="fa-solid fa-fire"></i>
+        </button>
+      </a>
+    </li>
+    <li>
+      <a href="/leaderboard">
+        <button class="nav-button">
+          <i class="fa-solid fa-trophy"></i>
+        </button>
+      </a>
+    </li>
+    <li th:if="${user != null and user.admin}">
+      <a href="/testanalytics">
+        <button class="nav-button">
+          <i class="fa-solid fa-code"></i>
+        </button>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<h1>Daily Challenge</h1>
+
+<form id="questionForm" method="post" role="form" th:action="@{submitQuestion}">
+  <label th:text="${question.questionText}"></label><br>
+
+  <input type="hidden" name="questionId" th:value="${question.id}">
+
+  <label><input type="radio" name="selectedOption" th:value="${question.optionA}"/><span th:text="${question.optionA}"></span></label><br>
+  <label><input type="radio" name="selectedOption" th:value="${question.optionB}"/><span th:text="${question.optionB}"></span></label><br>
+  <label><input type="radio" name="selectedOption" th:value="${question.optionC}"/><span th:text="${question.optionC}"></span></label><br>
+  <label><input type="radio" name="selectedOption" th:value="${question.optionD}"/><span th:text="${question.optionD}"></span></label><br>
+
+  <button type="button" onclick="validateForm()">Submit</button>
+  <div id="error-message" style="display: none; color: red;">Please select an option.</div>
+</form>
+
+<script>
+  function validateForm() {
+    var selectedOption = document.querySelector('input[name="selectedOption"]:checked');
+    if (!selectedOption) {
+      document.getElementById('error-message').style.display = 'block';
+      return false; // Prevent form submission
+    }
+    // If option selected, submit the form
+    document.getElementById('questionForm').submit();
+  }
+</script>
+
+</body>
+</html>

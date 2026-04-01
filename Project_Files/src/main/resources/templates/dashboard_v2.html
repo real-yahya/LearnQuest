@@ -1,0 +1,795 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBM Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/ea5cbdcda6.js" crossorigin="anonymous"></script>
+</head>
+
+<style>
+    *{
+        margin:0;
+        padding: 0;
+        outline: none;
+        border: none;
+        text-decoration: none !important;
+        box-sizing:border-box;
+        font-family: "IBM Plex Sans", sans-serif;
+    }
+
+    /* Scrollbar CSS */
+    /* REF - https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp*/
+    ::-webkit-scrollbar {
+        height: 5px;
+        width: 5px;
+        border-radius: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 20px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 20px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    body{
+        width: 960px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap:wrap;
+        justify-content: space-between;
+
+        position: absolute;
+
+        animation: fadeInAnimation ease 1s;
+
+        overflow: hidden;
+
+
+    }
+
+    @keyframes fadeInMoveUpAnimation {
+        0% {transform: translate(0,  50px);}
+        100% {transform: translate(0,  0px);}
+    }
+
+    /*Idle float animation*/
+    @keyframes floating {
+        0% { transform: translate(0,  0px); }
+        50%  { transform: translate(0, 20px); }
+        100%   { transform: translate(0, -0px); }
+    }
+
+    @keyframes fadeInAnimation {
+        0% {opacity: 0;}
+        100% {opacity: 1;}
+    }
+
+    nav{
+        position: fixed;
+
+        top: 0;
+        bottom: 0;
+        left:0;
+
+        height: 100%;
+        width:100px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        overflow: hidden;
+
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(1px);
+
+    }
+
+
+
+
+    /* Specific page content CSS */
+
+
+    #course-box{
+        position: fixed;
+        padding-left: 30px;
+        padding-top: 25px;
+
+        font-size: 20px;
+        font-weight: 600;
+
+        height: 300px;
+        max-height: 300px;
+
+        width: 600px;
+        max-width: 600px;
+
+        top: 100px;
+        left: 150px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+
+        /*border-radius: 20px;*/
+    }
+
+    #course-list-box{
+        margin-top: 20px;
+        position: fixed;
+
+        height: 200px;
+        max-height: 200px;
+
+        width: 550px;
+        max-width: 530px;
+
+        overflow-y: hidden;
+        overflow-x: auto;
+
+        padding: 20px;
+
+        display: flex;
+
+    }
+
+    #progress-box{
+        position: fixed;
+        padding-left: 30px;
+        padding-top: 25px;
+
+        font-size: 20px;
+        font-weight: 600;
+
+        height: 600px;
+        max-height: 300px;
+
+        width: 525px;
+        max-width: 350px;
+
+        top: 100px;
+        left: 780px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+
+        /*border-radius: 20px;*/
+    }
+
+    #time-box{
+        position: fixed;
+        padding-top: 66px;
+
+
+        font-size: 20px;
+        font-weight: 600;
+
+        height: 600px;
+        max-height: 200px;
+
+        width: 525px;
+        max-width: 350px;
+
+        text-align: center;
+
+        top: 426px;
+        left: 780px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+    }
+
+    #fav-course-box{
+        position: fixed;
+        padding-left: 30px;
+        padding-top: 25px;
+
+        font-size: 20px;
+        font-weight: 600;
+
+        height: 300px;
+        max-height: 300px;
+
+        width: 525px;
+        max-width: 350px;
+
+
+        top: 100px;
+        left: 1150px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+
+        /*border-radius: 20px;*/
+    }
+
+
+
+    #badge-box{
+        position: fixed;
+        padding-left: 30px;
+        padding-top: 25px;
+
+        font-size: 20px;
+        font-weight: 600;
+
+        height: 200px;
+        max-height: 200px;
+
+        width: 600px;
+        max-width: 600px;
+
+        top: 425px;
+        left: 150px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+
+        /*border-radius: 20px;*/
+    }
+
+    #daily-challenge{
+        position: fixed;
+
+        font-size: 20px;
+        font-weight: 600;
+
+        height: 100px;
+        max-height: 100px;
+
+        width: 220px;
+        max-width: 220px;
+
+        top: 425px;
+        left: 1150px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+
+        /*border-radius: 20px;*/
+    }
+
+    #logout-button{
+        position: fixed;
+
+        font-size: 20px;
+        font-weight: 600;
+
+        height: 100px;
+        max-height: 100px;
+
+        width: 110px;
+        max-width: 220px;
+
+        top: 425px;
+        left: 1380px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+
+        /*border-radius: 20px;*/
+    }
+
+    #user-info{
+        position: fixed;
+        padding-left: 20px;
+        padding-top: 15px;
+
+        font-size: 20px;
+        font-weight: 600;
+
+        height: 80px;
+        max-height: 80px;
+
+        width: 350px;
+        max-width: 350px;
+
+
+        top: 540px;
+        left: 1150px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+
+        /*border-radius: 20px;*/
+
+        text-align: left;
+    }
+
+    #profile-icon{
+        width: 50px;
+        border-radius: 50%;
+        border: 2px solid black;
+    }
+
+    #logout-button:hover, #daily-challenge:hover {
+        background: rgba(0,0,0,0.6);
+        color: white;
+        transition: background 0.25s ease-in, color 0.25s ease-in;
+
+    }
+
+    .course-card{
+        position: relative;
+
+        padding: 10px;
+
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(1px);
+
+        width: 300px;
+        height: 175px;
+
+        margin-right: 20px;
+
+        min-width: 300px;
+        min-height: 150px;
+
+        max-width: 300px;
+        max-height: 150px;
+
+        border-radius: 20px;
+        text-align: center;
+    }
+
+    .course-name{
+        font-size: 15px;
+        font-weight: 100;
+    }
+
+    .course-status{
+        font-size: 15px;
+        font-weight: 100;
+        text-align: left;
+        margin-left: 10px;
+        margin-top: 10px;
+
+    }
+
+    .course-button{
+        position: relative;
+        top: 40px;
+        padding: 10px;
+        border-radius: 10px;
+        z-index: -1;
+    }
+
+    .course-button:hover, .nav-button:hover, .f-course-button:hover{
+        background: rgba(0,0,0,0.7);
+        color: white;
+        transition: background 0.25s ease-in, color 0.25s ease-in;
+    }
+
+
+    .nav-button{
+        width: 100%;
+        height: 90px;
+        font-size: 25px;
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(1px);
+    }
+
+    .current-nav-button{
+        color: white;
+        background: rgba(0,0,0,0.7);
+        width: 100%;
+        height: 90px;
+        font-size: 25px;
+    }
+
+    ul{
+        margin-top:50px;
+
+    }
+
+    .badge-list{
+        margin-top: 10px;
+        height: 120px;
+        width: 95%;
+
+        text-align: center;
+
+        padding: 10px;
+
+        overflow-y: hidden;
+        overflow-x: auto;
+
+        display: flex;
+    }
+
+    .badge-card{
+        margin-right: 15px;
+    }
+
+    .badge-icon{
+        border-radius: 50%;
+        width: 80px;
+        border: 2px solid black;
+    }
+
+    .badge-name{
+        font-size: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        width: 85px;
+        text-align: center;
+
+
+    }
+
+    h1{
+        position: fixed;
+        margin-top: 25px;
+        left:160px;
+
+
+    }
+
+    #ibm-text{
+        font-weight: 100;
+    }
+
+    #user-info{
+        position: fixed;
+
+    }
+
+    #username-text{
+        position: fixed;
+        margin-left: 60px;
+        margin-top: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        width: 70%;
+        text-align: center;
+    }
+
+    .fav-course-list{
+        position: fixed;
+        right:15px;
+
+        width: 90%;
+        height: 70%;
+
+        padding: 10px;
+
+        text-align: center;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .fcourse-card{
+        position: relative;
+
+        padding-left: 20px;
+        padding-top: 100px;
+
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(1px);
+
+        width: 300px;
+        height: 175px;
+
+        margin-right: 20px;
+        margin-left: 40px;
+        margin-bottom: 20px;
+
+        min-width: 200px;
+        min-height: 150px;
+
+        max-width: 200px;
+        max-height: 150px;
+
+        border-radius: 20px;
+        text-align: center;
+
+    }
+
+    #clock{
+        font-size: 25px;
+        text-align: center !important;
+        margin-top: 50px;
+    }
+
+    .f-course-button{
+        position: relative;
+        top: -50px;
+        margin-right: 17px;
+        padding: 10px;
+        border-radius: 10px;
+
+    }
+
+
+    .f-course-name{
+        position: relative;
+        top: -90px;
+        margin-right: 20px;
+        font-size: 15px;
+        font-weight: 100;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .chart-box{
+        position: fixed;
+        margin-top: 30px;
+        margin-left: 50px;
+        width: 230px;
+        height: 230px;
+    }
+
+    .legend-element{
+        position: relative;
+        font-size: 10px;
+
+        top: -280px;
+        margin-left: 150px;
+
+        list-style-type: none;
+    }
+
+
+
+
+
+</style>
+
+<body>
+<h1> Welcome to <span id = "ibm-text">IBM</span> SkillsBuild.</h1>
+        <!-- Navigation bar -->
+        <nav>
+            <ul>
+                <li>
+                    <button class = "current-nav-button">
+                        <i class="fa-solid fa-house"></i>
+                    </button>
+                </li>
+                <li>
+                    <!-- Direct to course page -->
+                    <a th:href="@{/viewCourses}">
+                        <button class = "nav-button">
+                            <i class="fa-solid fa-book"></i>
+                        </button>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/viewBadges}">
+                        <!--Button that directs to badge page-->
+                        <button class = "nav-button">
+                            <i class="fa-solid fa-medal"></i>
+                        </button>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/dailyChallenge}">
+                    <button class = "nav-button">
+                        <i class="fa-solid fa-brain"></i>
+                    </button>
+                    </a>
+                </li>
+
+                <li>
+                    <a th:href="@{/popularpage}">
+                        <button class = "nav-button">
+                            <i class="fa-solid fa-fire"></i>
+                        </button>
+                    </a>
+                </li>
+
+                <li>
+                    <a th:href="@{/leaderboard}">
+                        <button class = "nav-button">
+                            <i class="fa-solid fa-trophy"></i>
+                        </button>
+                    </a>
+                </li>
+                <li>
+
+                    <span th:if="${user.admin}">
+                        <a th:href="@{/testanalytics}">
+                            <button class = "nav-button">
+                                <i class="fa-solid fa-code"></i>
+                            </button>
+                        </a>
+                    </span>
+                </li>
+
+            </ul>
+        </nav>
+        <div class = "content">
+        <!-- Course related content -->
+        <div id = "course-box">
+            <p><i class="fa-solid fa-book"></i> Your Courses</p>
+            <div id = "course-list-box">
+                <div th:each="item : ${courses}">
+                    <div class = "course-card">
+                        <p class="course-name" th:text="${item.getCourse().name}"></p>
+                        <a th:href="@{/viewCoursePage/{id} (id = ${item.getU_courseId()})}">
+                            <button  class="course-button"> View Course </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id ="fav-course-box">
+            <p><i class="fa-solid fa-heart"></i> Favourite Courses</p>
+            <div class = "fav-course-list">
+                <div th:each="item : ${courses}">
+                    <span th:if="${item.isFavourite()}">
+                        <div class = "fcourse-card">
+                            <p class="f-course-name" th:text="${item.getCourse().name}"></p>
+                            <a th:href="@{/viewCoursePage/{id} (id = ${item.getU_courseId()})}">
+                                <button  class="f-course-button"> View Course </button>
+                            </a>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+            <div id = "progress-box">
+                <p><i class="fa-solid fa-bars-progress"></i> Overall Progress </p>
+                <div class = "chart-box">
+                    <canvas id ="pie-chart" class="animate-pie-chart" width="180" height="180"></canvas>
+                    <ul id ="pie-chart-legends">
+                        <li class = "legend-element"> <i class="fa-solid fa-square"></i> Completed </li>
+                        <li class = "legend-element"> <i class="fa-regular fa-square"></i> Not completed </li>
+                    </ul>
+
+                </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", showPieChart);
+
+                    function showPieChart(){
+                        console.log("function on load");
+
+                        var value1 = [[${valA}]];
+                        var value2 = [[${valB}]];
+
+                        let sliceA={size:value1, color: "black", border:"2px solid black"};
+                        let sliceB={size:value2, color: "white", border:"2px solid black"};
+
+                        const values=[sliceA.size, sliceB.size];
+
+                        const total = values.reduce((acc,val)=> acc + val, 0);
+
+                        let startAngle = 0;
+
+                        const canvas = document.getElementById("pie-chart");
+                        const ctx = canvas.getContext("2d");
+
+                        values.forEach((value,index) => {
+                            const angle = (value/total) * Math.PI * 2;
+
+                            ctx.beginPath();
+                            ctx.moveTo(canvas.width/2, canvas.height/2);
+                            ctx.arc(
+                                canvas.width / 2,
+                                canvas.height/2,
+                                canvas.width/2,
+                                startAngle - 0.02,
+                                startAngle + angle + 0.02
+                            )
+                            ctx.closePath();
+
+                            ctx.fillStyle = index === 0 ? sliceA.color : sliceB.color;
+                            ctx.fill();
+
+                            ctx.strokeStyle = index === 0 ? sliceA.border : sliceB.border;
+                            ctx.lineWidth = 2; // Adjust border thickness if needed
+                            ctx.stroke();
+
+                            startAngle += angle;
+
+
+                        });
+
+                    }
+
+                </script>
+            </div>
+
+
+
+        <div id="time-box">
+            <span id="clock"></span>
+        </div>
+
+        <script type="text/javascript">
+            var clockElement = document.getElementById('clock');
+
+            function clock() {
+                var currentDate = new Date();
+                var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                var formattedDate = currentDate.toLocaleString('en-US', options);
+                var timeString = ('0' + currentDate.getHours()).slice(-2) + ':' + ('0' + currentDate.getMinutes()).slice(-2);
+                clockElement.textContent = formattedDate + "\n" + timeString;
+            }
+
+            setInterval(clock, 1000);
+        </script>
+
+        <div id = "badge-box">
+            <p><i class="fa-solid fa-medal"></i> Badges </p>
+            <div class = "badge-list">
+                <div th:each="item : ${badges}">
+                    <div class = "badge-card">
+                        <img class="badge-icon" th:if="${item.id == 1}" src="https://i.ibb.co/DwDqwRN/first-login.jpg" alt="BadgeIcon">
+                        <img class="badge-icon" th:if="${item.id == 2}" src="https://i.ibb.co/Q8RQdQN/first-course.jpg" alt="BadgeIcon">
+                        <img class="badge-icon" th:if="${item.id == 3}" src="https://i.ibb.co/jZ79pqR/The-Two-Time.jpg" alt="BadgeIcon">
+                        <img class="badge-icon" th:if="${item.id == 4}" src="https://i.ibb.co/gVJyRnK/Speedster.jpg" alt="BadgeIcon">
+                        <p class="badge-name" th:text="${item.name}"></p>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
+            <a th:href="@{/dailyChallenge}">
+                <button id = "daily-challenge">
+                    <i class="fa-solid fa-brain"></i> Daily Challenge
+                </button>
+            </a>
+
+            <a th:href="@{/logout}">
+                <button  id ="logout-button">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </a>
+
+            <div id="user-info">
+                <p id = "username-text" th:text="${user.getFirstName() + ' ' + user.getLastName()}"></p>
+                <img id = "profile-icon" src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg" alt="pfp"/>
+            </div>
+
+<!--            <div class = "background">-->
+<!--                <div class = "shape"></div>-->
+<!--                <div class = "shape"></div>-->
+<!--                <div class = "shape"></div>-->
+<!--                <div class = "shape"></div>-->
+<!--            </div>-->
+
+        </div>
+
+
+
+
+
+</body>
+
+
+</html>

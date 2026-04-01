@@ -1,0 +1,843 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBM Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/ea5cbdcda6.js" crossorigin="anonymous"></script>
+</head>
+
+<style>
+    *{
+        margin:0;
+        padding: 0;
+        outline: none;
+        border: none;
+        text-decoration: none !important;
+        box-sizing:border-box;
+        font-family: "IBM Plex Sans", sans-serif;
+    }
+
+    /* Scrollbar CSS */
+    /* REF - https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp*/
+    ::-webkit-scrollbar {
+        height: 5px;
+        width: 5px;
+        border-radius: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 20px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 20px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    body{
+        /*width: 960px;*/
+        /*margin: 0 auto;*/
+        /*display: flex;*/
+        /*flex-wrap:wrap;*/
+        /*justify-content: space-between;*/
+
+        /*position: absolute;*/
+
+        animation: fadeInAnimation ease 1s;
+
+        /*overflow: hidden;*/
+    }
+
+    .main{
+        display: flex;
+        height: 100%;
+
+    }
+
+    @keyframes fadeInMoveUpAnimation {
+        0% {transform: translate(0,  50px);}
+        100% {transform: translate(0,  0px);}
+    }
+
+    /*Idle float animation*/
+    @keyframes floating {
+        0% { transform: translate(0,  0px); }
+        50%  { transform: translate(0, 20px); }
+        100%   { transform: translate(0, -0px); }
+    }
+
+    @keyframes fadeInAnimation {
+        0% {opacity: 0;}
+        100% {opacity: 1;}
+    }
+
+    form{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        align-items: center;
+        /*margin-top: 29px;*/
+        height: 90%;
+        width: 100%;
+    }
+
+    /* Nav bar CSS */
+    nav{
+        /*position: fixed;*/
+
+        top: 0;
+        bottom: 0;
+        left:0;
+
+        height: 100%;
+        width:100px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        overflow: hidden;
+
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(1px);
+
+    }
+
+
+    #profile-icon{
+        width: 50px;
+        border-radius: 50%;
+        border: 2px solid black;
+
+        margin-top: 10px;
+        margin-left: 10px;
+
+    }
+
+
+    .nav-button:hover, .submission-button:hover{
+        background: rgba(0,0,0,0.7);
+        color: white;
+        transition: background 0.25s ease-in, color 0.25s ease-in;
+    }
+
+
+    .nav-button{
+        width: 100%;
+        height: 90px;
+        font-size: 25px;
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(1px);
+    }
+
+    .current-nav-button{
+        color: white;
+        background: rgba(0,0,0,0.7);
+        width: 100%;
+        height: 90px;
+        font-size: 25px;
+    }
+
+    ul{
+        margin-top:50px;
+    }
+
+
+
+    .content-box{
+        position: relative;
+        /*width: 1350px;*/
+        /*height: 650px;*/
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+
+        flex-wrap: wrap;
+        align-content: center;
+        width: 95%;
+
+
+
+
+        /*left: 150px;*/
+        /*top: 50px;*/
+
+        /*padding: 30px;*/
+    }
+
+    /*COMMENTS AND RATING*/
+
+    .comment-box{
+        /*position: fixed;*/
+        /*border: 1.5px solid black;*/
+
+        width: 640px;
+
+        height: 585px;
+
+        left: 850px;
+
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .comment-form{
+        /*position: fixed;*/
+
+        /*border: 1.5px solid black;*/
+
+        height: 35%;
+        width: 100%;
+
+        padding:20px;
+        /*box-shadow: 0px 0px 15px rgba(0,0,0,0.2);*/
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+    }
+
+    .comment-form-heading{
+
+        font-size: 20px;
+    }
+
+    .comment-input-box{
+        /*position: fixed;*/
+
+
+        /*border: 1px solid black;*/
+
+        width: 100%;
+        height: 100%;
+
+
+
+        overflow: auto;
+        white-space: pre-wrap;
+        text-align: left;
+
+        padding: 5px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+    }
+
+    .submission-button{
+        /*position: relative;*/
+
+        width: 180px;
+        height: 46px;
+
+        /*margin-left: 340px;*/
+        /*margin-top: 100px;*/
+
+        border-radius: 10px;
+    }
+
+    .comment-section-box{
+
+        /*border: 1.5px solid black;*/
+        /*box-shadow: 0 0 15px rgba(0,0,0,0.2);*/
+        height: 63%;
+        width: 100%;
+        margin-top: 10px;
+
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+
+
+
+    }
+
+    .comment-section{
+        /*border: 1.5px solid black;*/
+
+        margin-top: 10px;
+        /*box-shadow: 0 4px 8px rgba(0,0,0,0.1);*/
+        height: 90%;
+        padding:15px;
+        /*display: flex;*/
+        /*flex-direction: column;*/
+        /*flex-wrap: wrap;*/
+        overflow-x: hidden;
+        overflow-y: auto;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(1px);
+    }
+
+
+    .comment-user{
+        margin-top: 10px;
+        margin-left: 10px;
+        /*border: 2px solid;*/
+        border-radius: 20px;
+        height: 100px;
+        width: 95%;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(1px);
+    }
+
+    .comment-text{
+        /*position: relative;*/
+        width: 400px;
+        height: 75px;
+
+        margin-top: -50px;
+        margin-left: 70px;
+
+        word-wrap: break-word;
+
+        overflow-y: auto;
+
+    }
+    .comment-right{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        height: 110%;
+    }
+    textarea.comment-input-box {
+
+
+        border-radius: 20px;
+        padding:15px;
+    }
+
+
+
+    .rate {
+        /*position: fixed;*/
+        height: 46px;
+        padding: 0 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(0, 0, 0,0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+
+        width: 180px;
+
+    }
+    .rate:not(:checked) > input {
+        position:absolute;
+        top:-9999px;
+    }
+    .rate:not(:checked) > label {
+        float:right;
+        width:1em;
+        overflow:hidden;
+        white-space:nowrap;
+        cursor:pointer;
+        font-size:30px;
+        color:#ccc;
+    }
+    .rate:not(:checked) > label:before {
+        content: '★ ';
+    }
+    .rate > input:checked ~ label {
+        color: black;
+    }
+    .rate:not(:checked) > label:hover,
+    .rate:not(:checked) > label:hover ~ label {
+        color: black;
+    }
+    .rate > input:checked + label:hover,
+    .rate > input:checked + label:hover ~ label,
+    .rate > input:checked ~ label:hover,
+    .rate > input:checked ~ label:hover ~ label,
+    .rate > label:hover ~ input:checked ~ label {
+        color: black;
+    }
+
+    /*COURSE SECTION*/
+
+    .course-content-box{
+        /*position: fixed;*/
+        background-color: white;
+
+
+        width: 640px;
+        height: 585px;
+        padding: 20px
+    }
+
+    .course-info{
+        padding-top:60px;
+        /*box-shadow: 0px 0px 15px rgba(0,0,0,0.2);*/
+        width:100%;
+        height: 35%;
+        /*border: 1.5px solid black;*/
+        text-align: center;
+        justify-self: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+    }
+
+    .course-data{
+        margin-top: 10px;
+        /*box-shadow: 0px 0px 15px rgba(0,0,0,0.2);*/
+        width:100%;
+        height: 63%;
+        padding: 20px;
+        /*border: 1.5px solid black;*/
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+
+        display: flex; /* Add this */
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+        text-align: center;
+    }
+
+    .course-start{
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(1px);
+        border-radius: 20px;
+        width: 40%;
+        height: 40%;
+        /*border: 1.5px solid black;*/
+        padding-top: 30px;
+        text-align: center;
+    }
+
+    .course-end{
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.2);
+        border-radius: 20px;
+        /*border: 1.5px solid black;*/
+        width: 40%;
+        height: 40%;
+        padding-top: 30px;
+        text-align: center;
+    }
+
+    .course-button{
+        /*position: fixed;*/
+
+        bottom: 70px;
+
+    }
+
+    .course-complete-text{
+
+    }
+    progress {
+        border-radius: 7px;
+        width: 80%;
+        height: 22px;
+        margin-left: -11.5%;
+        box-shadow: 1px 1px 4px rgba( 0, 0, 0, 0.2 );
+        margin: auto;
+    }
+    progress::-webkit-progress-bar {
+        background-color: #181818;
+        border-radius: 10px;
+        padding: 3px;
+    }
+    progress::-webkit-progress-value {
+        background-color: #ffffff;
+        border-radius: 7px;
+    }
+    .progress{
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+    }
+    .btn {
+        -webkit-border-radius: 28px;
+        -moz-border-radius: 28px;
+        border-radius: 28px;
+        color: #ffffff;
+        font-size: 10px;
+        background: #505457;
+        padding: 10px 20px 10px 20px;
+        text-decoration: none;
+    }
+
+    .btn:hover {
+        background: #242424;
+        text-decoration: none;
+    }
+
+    .more-info{
+
+    }
+
+    .comment-left{
+        width:45%
+    }
+
+
+</style>
+
+<body>
+<div class="main">
+
+<!-- Navigation bar -->
+<nav>
+    <ul>
+        <!-- Dashboard Button -->
+        <li class="nav-element">
+            <a th:href="@{/dashboard}">
+                <button class = "nav-button">
+                    <i class="fa-solid fa-house"></i>
+                </button>
+            </a>
+        </li>
+        <!-- Course Page Button -->
+        <li>
+            <a th:href="@{/viewCourses}">
+                <button class = "current-nav-button">
+                    <i class="fa-solid fa-book"></i>
+                </button>
+            </a>
+        </li>
+        <!-- Badges Page Button -->
+        <li>
+            <a th:href="@{/viewBadges}">
+                <button class = "nav-button">
+                    <i class="fa-solid fa-medal"></i>
+                </button>
+            </a>
+        </li>
+        <!-- Daily Challenge Button -->
+        <li>
+            <a th:href="@{/dailyChallenge}">
+                <button class = "nav-button">
+                    <i class="fa-solid fa-brain"></i>
+                </button>
+            </a>
+        </li>
+        <!-- Popular Page Button -->
+        <li>
+            <a th:href="@{/popularpage}">
+                <button class = "nav-button">
+                    <i class="fa-solid fa-fire"></i>
+                </button>
+            </a>
+        </li>
+        <!-- Leaderboard Button -->
+        <li>
+            <a th:href="@{/leaderboard}">
+                <button class = "nav-button">
+                    <i class="fa-solid fa-trophy"></i>
+                </button>
+            </a>
+        </li>
+        <li>
+            <span th:if="${user.admin}">
+                <a th:href="@{/testanalytics}">
+                    <button class = "nav-button">
+                        <i class="fa-solid fa-code"></i>
+                    </button>
+                </a>
+            </span>
+        </li>
+    </ul>
+</nav>
+
+    <!-- Main Content Box -->
+<div class = "content-box">
+    <!-- Course Content Box -->
+    <div class = "course-content-box">
+        <!-- Display Course Information -->
+        <div class = "course-info">
+            <h2 th:text="${course.getCourse().name}" style="text-align: center; "></h2>
+        </div>
+        <!-- Display Course Progress and Actions -->
+        <div class="more-info">
+            <!-- Switch based on Course Status -->
+        <span th:switch="${course.courseStatus.toString()}">
+            <!-- Start Course -->
+            <span th:case="'START'">
+                <!-- Display Start Time, End Time, and Progress Bar -->
+                <div class = "course-data">
+                        <div class = "course-start">
+                            <h4 class = "time-lable"> Start Time </h4><br>
+                            <span th:if="${course.getTimeStart() == null}">--:--:-- --/--/----</span>
+                        </div>
+                        <div class = "course-end">
+                            <h4 class = "time-lable"> End Time </h4><br>
+                            <span th:if="${course.getTimeEnd() == null}">--:--:-- --/--/----</span>
+                        </div>
+                    <div class="progress">
+                        <label>Progress :</label><br>
+                        <progress value="0" max="100">  </progress>
+                        <a th:href="@{/updateCourse/{id} (id = ${course.getU_courseId()})}">
+                        <button class="submission-button">Start Course?</button>
+                        </a>
+                    </div>
+                </div>
+
+            </span>
+
+            <span th:case="'T1'">
+                 <!-- Display Start Time, End Time, Progress Bar, and Task Completion Button -->
+                <div class = "course-data">
+                        <div class = "course-start">
+                            <h4 class = "time-lable"> Start Time <br>
+                                <span class="time-value" th:text="${#temporals.format(course.getTimeStart(), 'HH:mm:ss, dd MMM yyyy')}"></span>
+                            </h4>
+                        </div>
+                        <div class = "course-end">
+                            <h4 class = "time-lable"> End Time <br>
+                                <span th:if="${course.getTimeEnd() == null}">--:--:-- --/--/----</span>
+                            </h4>
+                        </div>
+                    <div class="progress">
+                        <label>Progress :</label>
+                        <progress value="3" max="100">  </progress>
+                        <a th:href="@{/updateCourse/{id} (id = ${course.getU_courseId()})}">
+                            <button class="submission-button">Finish Task 1?</button>
+                        </a>
+                    </div>
+                </div>
+
+            </span>
+
+            <span th:case="'T2'">
+                 <!-- Display Start Time, End Time, Progress Bar, and Task Completion Button -->
+                <div class = "course-data">
+                        <div class = "course-start">
+                            <h4 class = "time-lable"> Start Time <br>
+                                <span class="time-value" th:text="${#temporals.format(course.getTimeStart(), 'HH:mm:ss, dd MMM yyyy')}"></span>
+                            </h4>
+                        </div>
+                        <div class = "course-end">
+                            <h4 class = "time-lable"> End Time <br>
+                                <span th:if="${course.getTimeEnd() == null}">--:--:-- --/--/----</span>
+                            </h4>
+                        </div>
+                    <div class="progress">
+                        <label>Progress :</label>
+                        <progress value="20" max="100">  </progress>
+                        <a th:href="@{/updateCourse/{id} (id = ${course.getU_courseId()})}">
+                        <button class="submission-button">Finish Task 2?</button>
+                        </a>
+                    </div>
+
+                </div>
+
+            </span>
+
+            <span th:case="'T3'">
+                <!-- Display Start Time, End Time, Progress Bar, and Task Completion Button -->
+                <div class = "course-data">
+                        <div class = "course-start">
+                            <h4 class = "time-lable"> Start Time <br>
+                                <span class="time-value" th:text="${#temporals.format(course.getTimeStart(), 'HH:mm:ss, dd MMM yyyy')}"></span>
+                            </h4>
+                        </div>
+                        <div class = "course-end">
+                            <h4 class = "time-lable"> End Time <br>
+                                <span th:if="${course.getTimeEnd() == null}">--:--:-- --/--/----</span>
+                            </h4>
+                        </div>
+                    <div class="progress">
+                        <label>Progress :</label>
+                        <progress value="40" max="100">  </progress>
+                        <a th:href="@{/updateCourse/{id} (id = ${course.getU_courseId()})}">
+                        <button class="submission-button">Finish Task 3?</button>
+                        </a>
+                    </div>
+                </div>
+
+            </span>
+
+            <span th:case="'T4'">
+                 <!-- Display Start Time, End Time, Progress Bar, and Task Completion Button -->
+                <div class = "course-data">
+                        <div class = "course-start">
+                            <h4 class = "time-lable"> Start Time <br>
+                                <span class="time-value" th:text="${#temporals.format(course.getTimeStart(), 'HH:mm:ss, dd MMM yyyy')}"></span>
+                            </h4>
+                        </div>
+                        <div class = "course-end">
+                            <h4 class = "time-lable"> End Time <br>
+                                <span th:if="${course.getTimeEnd() == null}">--:--:-- --/--/----</span>
+                            </h4>
+                        </div>
+                        <div class="progress">
+                            <label>Progress :</label>
+                            <progress value="60" max="100">  </progress>
+                            <a th:href="@{/updateCourse/{id} (id = ${course.getU_courseId()})}">
+                            <button class="submission-button">Finish Task 4?</button>
+                            </a>
+                        </div>
+                </div>
+
+            </span>
+
+            <span th:case="'T5'">
+                 <!-- Display Start Time, End Time, Progress Bar, and Task Completion Button -->
+                <div class = "course-data">
+                        <div class = "course-start">
+                            <h4 class = "time-lable"> Start Time <br>
+                                <span class="time-value" th:text="${#temporals.format(course.getTimeStart(), 'HH:mm:ss, dd MMM yyyy')}"></span>
+                            </h4>
+                        </div>
+                        <div class = "course-end">
+                            <h4 class = "time-lable"> End Time <br>
+                                <span th:if="${course.getTimeEnd() == null}">--:--:-- --/--/----</span>
+                            </h4>
+                        </div>
+                    <div class="progress">
+                        <label>Progress :</label>
+                        <progress value="80" max="100">  </progress>
+                        <a th:href="@{/updateCourse/{id} (id = ${course.getU_courseId()})}">
+                        <button class="submission-button">Finish Task 5?</button>
+                        </a>
+                    </div>
+                </div>
+            </span>
+
+            <span th:case="'COMPLETE'">
+                <!-- Display Start Time, End Time, Progress Bar, and Course Completion Message -->
+                <div class = "course-data">
+                        <div class = "course-start">
+                            <h4 class = "time-lable"> Start Time <br>
+                                <span class="time-value" th:text="${#temporals.format(course.getTimeStart(), 'HH:mm:ss, dd MMM yyyy')}"></span>
+                            </h4>
+                        </div>
+                        <div class = "course-end">
+                            <h4 class = "time-lable"> End Time <br>
+                                <span class="time-value" th:text="${#temporals.format(course.getTimeEnd(), 'HH:mm:ss, dd MMM yyyy')}"></span>
+                            </h4>
+                        </div>
+
+                    <div class="progress">
+                        <label>Progress :</label>
+                        <progress value="100" max="100">  </progress>
+                    </div>
+                    <h4 class = "course-complete-text">🎉Course Completed🎉</h4>
+                </div>
+            </span>
+            </span>
+        </div>
+    </div>
+
+
+
+    <!-- Comment Box -->
+    <div class = "comment-box">
+        <!-- Comment Form -->
+        <div class= "comment-form">
+                <!-- Triggers function to check if rating is done by user-->
+                <form onsubmit="return validateSubmission()" action ="#" th:action="@{/commentSubmission/{id} (id = ${course.getU_courseId()})}" method = "post" th:object="${course}">
+                        <div class="comment-left">
+                            <i class="fa-solid fa-comments"></i>
+                            <label class = "comment-form-heading">Post a comment</label><p>
+                        <textarea class="comment-input-box" name="comment"></textarea>
+                        <input type="hidden" name="rating" id="rating" value="1">
+                        <!-- Rating System -->
+                        <!-- REF - https://codepen.io/hesguru/pen/BaybqXv -->
+                    </p>
+                </div>
+                <div class="comment-right">
+                    <div class="rate">
+                        <input type="radio" id="star5" name="rate" value="5" onclick="setRating(5)"/>
+                        <label for="star5" title="5 Stars">5 stars</label>
+                        <input type="radio" id="star4" name="rate" value="4" onclick="setRating(4)" />
+                        <label for="star4" title="4 Stars">4 stars</label>
+                        <input type="radio" id="star3" name="rate" value="3" onclick="setRating(3)"/>
+                        <label for="star3" title="3 Stars">3 stars</label>
+                        <input type="radio" id="star2" name="rate" value="2" onclick="setRating(2)"/>
+                        <label for="star2" title="2 Stars">2 stars</label>
+                        <input type="radio" id="star1" name="rate" value="1" onclick="setRating(1)"/>
+                        <label for="star1" title="1 Star">1 star</label>
+                    </div>
+
+                    <!-- When use clicks on a star, the rating changes in this function -->
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                        var courseStatus= /*[[ ${course.getCourseStatus()} ]]*/;
+                        /*]]>*/
+                    </script>
+
+                    <script>
+                        function setRating(value) {
+                            document.getElementById('rating').value = value;
+                        }
+
+                        // function to check if rating is done by user, alert if they haven't
+                        function validateSubmission() {
+                            var rating = document.querySelector('input[name="rate"]:checked');
+
+                            var courseStatusString = courseStatus.toString();
+
+                            if (!rating) {
+                                console.log(courseStatus)
+                                alert("Please select a rating.");
+                                return false; // Prevent form submission
+                            }
+
+                            if (courseStatusString !== 'COMPLETE'){
+
+                                alert("Please complete the course first.");
+                                return false;
+                            }
+
+                            return true; // Allow form submission
+                        }
+
+                    </script>
+
+                    <button class = "submission-button" type="submit">Submit</button>
+                </div>
+
+            </form>
+        </div>
+        <!-- Comment Section -->
+        <div class="comment-section-box">
+            <!-- Display Existing Comments -->
+            <p>Comments</p>
+            <div class="comment-section">
+                <!-- Iterate through Comments and Display User, Rating, and Comment Text -->
+
+                <div th:each="item : ${u_courses}">
+                    <div class = "comment-user">
+                        <img id = "profile-icon" src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg" alt="pfp"/>
+                        <div class = "comment-text">
+                            <h5 th:text="${item.getUser().name}"></h5>
+                            <span th:switch="${item.getRating()}">
+                                <h5 th:case="1">★</h5>
+                                <h5 th:case="2">★★</h5>
+                                <h5 th:case="3">★★★</h5>
+                                <h5 th:case="4">★★★★</h5>
+                                <h5 th:case="5">★★★★★</h5>
+                            </span>
+                            <h6 th:text="${item.getComment()}"></h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+</div>
+
+</body>
+
+
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/ea5cbdcda6.js" crossorigin="anonymous"></script>
+    <title>Dashboard Home</title>
+    <style>
+        *,
+        *:before,
+        *:after {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: "IBM Plex Sans", sans-serif;
+            background-color: white;
+            overflow: hidden;
+
+        }
+
+
+
+        .content-wrapper {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            font-weight: 600;
+            width: 100%;
+
+
+        }
+
+
+        /* [START] Animation Key Frames */
+
+        @keyframes moveUp {
+            0% {transform: translateY(100%);}
+            100% {transform: translateY(0);}
+        }
+
+        /*Idle float animation*/
+        @keyframes floating {
+            0% { transform: translate(0,  0px); }
+            50%  { transform: translate(0, 20px); }
+            100%   { transform: translate(0, -0px); }
+        }
+
+        @keyframes fadeInAnimation {
+            0% {opacity: 0;}
+            100% {opacity: 1;}
+        }
+
+        /* [END] - Animation Key Frame*/
+
+
+        /* [START] top-wrapper: Navbar, Logout Button, Logo */
+
+        .top-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            max-width: 1100px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 50px;
+        }
+
+
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1px;
+            text-align: center;
+            text-decoration: none;
+            color: black;
+        }
+
+
+        .logo .first-text{
+            font-weight: normal!important;
+            padding-right: 8px;
+
+        }
+
+        .logo .second-text{
+            font-weight: 900!important;
+            padding-right: 8px;
+
+        }
+
+        /*REF - https://www.30secondsofcode.org/css/s/hover-underline-animation/ */
+
+        /* Navbar */
+        .navbar{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            margin-top: 10px;
+
+        }
+
+        .navbar a{
+            position:relative;
+            display: inline-block;
+            font-size: 20px;
+            color: black;
+            text-decoration: none;
+            margin: 0 40px; /*Nav spacing*/
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .navbar a::after{
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #4e9cff, #4a00e0);
+            left: 0px;
+            bottom: -8px;
+            border-radius: 60px;
+            font-weight: 600;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform .3s;
+        }
+
+
+        /* Also makes it so the specific nav element is highlighted when on a specific page*/
+        .navbar a:hover::after,
+        .navbar .current-nav::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 5%;
+            right: -24%;
+            font-weight: bold;
+            padding: 20px 20px;
+            background-color: white;
+            color: black;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 20px;
+        }
+
+        .logout-button:hover{
+            content: "Log Out";
+            transition: background 0.25s ease-in, color 0.25s ease-in;
+            background: black;
+            color: white;
+        }
+
+
+        .logout-button:hover::after {
+            opacity: 1; /* Show the label on hover */
+        }
+
+        .back-button {
+            position: absolute;
+            top: 5%;
+            left: -24%;
+            font-weight: bold;
+            padding: 20px 20px;
+            background-color: white;
+            color: black;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 20px;
+        }
+
+        .back-button:hover{
+            content: "Log Out";
+            transition: background 0.25s ease-in, color 0.25s ease-in;
+            background: black;
+            color: white;
+        }
+
+
+        .back-button:hover::after {
+            opacity: 1; /* Show the label on hover */
+        }
+
+
+        /* [END] top-wrapper: Navbar, Logout Button, Logo */
+
+
+        /*[START] - Circle animations*/
+        /* REF - https://www.geeksforgeeks.org/css-floating-animation/ */
+        /* REF - https://codepen.io/fghty/pen/PojKNEG */
+        .background{
+            width: 490px;
+            height: 700px;
+            position: absolute;
+            transform: translate(-50%,-50%);
+            left: 250px;
+            bottom: -100px;
+            z-index: -100;
+            animation: fadeInAnimation ease 1s, moveUp 1s ease forwards;
+        }
+        .background .shape{
+            height: 200px;
+            width: 200px;
+            position: absolute;
+            border-radius: 50%;
+            animation-name: floating;
+            animation-duration: 5s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            margin-left: 30px;
+            margin-top: 5px;
+        }
+
+        .shape:nth-child(1){
+            background: linear-gradient(
+                    #1845ad, #23a2f6);
+            left: 60%;
+            top: 50%;
+
+            height: 100px;
+            width: 100px;
+
+        }
+
+        .shape:nth-child(2){
+            background: linear-gradient(
+                    to right,
+                    #4e9cff, #4a00e0);
+            right: -12%;
+            bottom: -2%;
+        }
+
+        .shape:nth-child(3){
+            background: linear-gradient(
+                    to right,
+                    #8e2de2, #4a00e0);
+            right: 60%;
+            bottom: 30%;
+
+            height: 150px;
+            width: 150px;
+        }
+
+        .shape:nth-child(4){
+            background: linear-gradient(
+                    to right,
+                    #64ffda, #00bfa5);
+            right: 60%;
+            bottom: -20%;
+
+            height: 250px;
+            width: 250px;
+        }
+        /*[END] - Circle animations*/
+
+
+        /* [START] - Scroll Bar*/
+        /* REF - https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp */
+        /* width */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: white;
+            border-radius: 200px !important;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 200px !important;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /*[START] Course Selection Styling*/
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 50px;
+            max-width: 820px; /* Set maximum width to fit only two cards horizontally */
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInAnimation ease 1s;
+        }
+
+        .card {
+            position: relative; /* Set position to relative */
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px 30px;
+            margin: 0 20px 20px 0;
+            width: 300px;
+            max-width: 400px;
+            height: 200px;
+            overflow-y: auto;
+        }
+
+        .card .course-name{
+            position: fixed;
+            text-align: center;
+        }
+
+        .course-button {
+            position: fixed;
+
+            font-weight: 500;
+            font-family: "IBM Plex Sans", sans-serif;
+
+            background-color: white;
+            color: black;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+
+            margin-top: 100px;
+            margin-left: 46px;
+
+
+            text-align: center;
+
+            height: 40px;
+            width: 150px;
+
+            overflow-x: hidden;
+            overflow-y: hidden !important;
+        }
+
+        .course-button:hover{
+            transition: background 0.25s ease-in, color 0.25s ease-in;
+            background: black;
+            color: white;
+        }
+
+        /*[END] Course Selection Styling*/
+    </style>
+</head>
+<body>
+<div class="content-wrapper">
+
+    <!-- Back, Logout Buttons, NavBar, Logo -->
+    <div class="top-wrapper">
+
+        <!-- IBM Logo -->
+        <a class="logo" title="Go to Dashboard" th:href="@{/dashboard}">
+            <h1 class = "first-text">IBM</h1>
+            <h1 class = "second-text">SkillsBuild</h1>
+        </a>
+
+        <!-- Nav Bar -->
+        <div class="navbar">
+            <a title = "View Course" th:href="@{/viewCourses}">My Courses</a>
+            <a title = "View Daily Challenges" th:href="@{/dailyChallenge}">My Daily Challenge</a>
+            <a title = "View Badges" th:href="@{/viewBadges}">My Badges</a>
+            <a title = "View Popular Courses" th:href="@{/popular}">Popular Courses</a>
+            <a title = "View Popular Courses" th:href="@{/testanalytics}">Analytics</a>
+        </div>
+
+
+        <!-- Log Out Button -->
+        <a th:href="@{/logout}" >
+            <button title="Log Out" class="logout-button">
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </button>
+        </a>
+
+        <!-- Back Button -->
+        <a th:href="@{/dashboard}" >
+            <button title="Back" class="back-button">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>
+        </a>
+
+    </div>
+
+    <div class="main-content">
+        <div th:each="item : ${courses}">
+            <div class="card">
+                <div class="course_container">
+                    <h3 class="course-name" th:text="${item.getCourse().name}"></h3>
+                    <a th:href="@{/viewCoursePage/{id} (id = ${item.getU_courseId()})}">
+                        <!-- Move the button inside the card -->
+                        <button class="course-button">Open Course</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+</div>
+</body>
+</html>

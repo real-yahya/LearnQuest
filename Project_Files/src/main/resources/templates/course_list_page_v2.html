@@ -1,0 +1,629 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBM Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/ea5cbdcda6.js" crossorigin="anonymous"></script>
+</head>
+
+<style>
+    *{
+        margin:0;
+        padding: 0;
+        outline: none;
+        border: none;
+        text-decoration: none !important;
+        box-sizing:border-box;
+        font-family: "IBM Plex Sans", sans-serif;
+    }
+
+    /* Scrollbar CSS */
+    /* REF - https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp*/
+    ::-webkit-scrollbar {
+        height: 5px;
+        width: 5px;
+        border-radius: 20px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 20px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 20px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    body{
+        width: 960px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap:wrap;
+        justify-content: space-between;
+
+        position: absolute;
+
+
+
+        overflow: hidden;
+
+
+    }
+
+    @keyframes fadeInMoveUpAnimation {
+        0% {transform: translate(0,  50px);}
+        100% {transform: translate(0,  0px);}
+    }
+
+    /*Idle float animation*/
+    @keyframes floating {
+        0% { transform: translate(0,  0px); }
+        50%  { transform: translate(0, 20px); }
+        100%   { transform: translate(0, -0px); }
+    }
+
+    @keyframes fadeInAnimation {
+        0% {opacity: 0;}
+        100% {opacity: 1;}
+    }
+
+    nav{
+        position: fixed;
+
+        top: 0;
+        bottom: 0;
+        left:0;
+
+        height: 100%;
+        width:100px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        overflow: hidden;
+
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(1px);
+
+    }
+
+
+
+
+    /* Specific page content CSS */
+
+
+    #course-box{
+        animation: fadeInAnimation ease 1s;
+
+        position: fixed;
+        padding-left: 30px;
+        padding-top: 25px;
+
+        font-size: 20px;
+        font-weight: 600;
+
+        height: 500px;
+        max-height: 450px;
+
+        width: 1350px;
+        max-width: 1300px;
+
+        top: 110px;
+        left: 150px;
+
+
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+
+        text-align: center;
+        display: flex;
+
+        /*border-radius: 20px;*/
+    }
+
+    #course-list-box{
+
+        margin-top: 60px;
+        margin-left: 110px;
+
+        position: fixed;
+
+        height: 75%;
+        max-height: 95%;
+
+        width: 82%;
+        max-width: 82%;
+
+        overflow-y: auto;
+        overflow-x: hidden;
+
+        padding: 20px;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+    }
+
+
+
+    #logout-button{
+        position: fixed;
+
+        font-size: 20px;
+        font-weight: 600;
+
+        height: 100px;
+        max-height: 100px;
+
+        width: 110px;
+        max-width: 220px;
+
+        top: 425px;
+        left: 1380px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+
+        /*border-radius: 20px;*/
+    }
+
+    #user-info{
+        position: fixed;
+        padding-left: 20px;
+        padding-top: 15px;
+
+        font-size: 20px;
+        font-weight: 600;
+
+        height: 80px;
+        max-height: 80px;
+
+        width: 350px;
+        max-width: 350px;
+
+
+        top: 600px;
+        left: 1100px;
+
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.4);
+        backdrop-filter: blur(1px);
+
+        /*border-radius: 20px;*/
+
+        text-align: left;
+    }
+
+    #profile-icon{
+        width: 50px;
+        border-radius: 50%;
+        border: 2px solid black;
+    }
+
+    #logout-button:hover, #daily-challenge:hover {
+        background: rgba(0,0,0,0.6);
+        color: white;
+        transition: background 0.25s ease-in, color 0.25s ease-in;
+
+    }
+
+    .course-card{
+        position: relative;
+
+        padding: 10px;
+
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(1px);
+
+        width: 300px;
+        height: 175px;
+
+        margin-right: 20px;
+        margin-bottom: 20px;
+
+        min-width: 300px;
+        min-height: 150px;
+
+        max-width: 300px;
+        max-height: 150px;
+
+        border-radius: 20px;
+        text-align: center;
+    }
+
+    .course-name{
+        font-size: 15px;
+        font-weight: 100;
+    }
+
+    .course-status{
+        font-size: 15px;
+        font-weight: 100;
+        text-align: left;
+        margin-left: 10px;
+        margin-top: 10px;
+
+    }
+
+    .course-button{
+        position: relative;
+        top: 30px;
+        padding: 10px;
+        border-radius: 10px;
+        z-index: -1;
+    }
+
+    .course-button:hover, .nav-button:hover{
+        background: rgba(0,0,0,0.7);
+        color: white;
+        transition: background 0.25s ease-in, color 0.25s ease-in;
+    }
+
+
+    .nav-button{
+        width: 100%;
+        height: 90px;
+        font-size: 25px;
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(1px);
+
+
+    }
+
+    .current-nav-button{
+        color: white;
+        background: rgba(0,0,0,0.7);
+        width: 100%;
+        height: 90px;
+        font-size: 25px;
+    }
+
+    ul{
+        margin-top:50px;
+    }
+
+
+    h1{
+        position: fixed;
+        margin-top: 25px;
+        left:160px;
+
+
+    }
+
+    #ibm-text{
+        font-weight: 100;
+    }
+
+    #user-info{
+        position: fixed;
+
+    }
+
+    #username-text{
+        position: fixed;
+        margin-left: 60px;
+        margin-top: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        width: 70%;
+        text-align: center;
+    }
+
+    [data-tab-content]{
+        display: none;
+
+    }
+
+    .active[data-tab-content]{
+        display: flex;
+        flex-wrap: wrap;
+
+    }
+
+    .tab-header {
+        position: fixed;
+    }
+
+    .tabs {
+        list-style-type: none;
+        display: flex; /* Use flexbox to align items horizontally */
+        padding: 0;
+
+        margin-left: 15px;
+        margin-top: 70px;
+    }
+
+    .tab {
+        position: fixed;
+
+        margin-right: 22px;
+
+        height: 40px;
+        min-width: 200px;
+
+        bottom: 60px;
+
+        text-align: center;
+
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        padding: 13px;
+
+    }
+
+    .tab:hover{
+        color: white;
+        background: black;
+        transition: background 0.25s ease-in, color 0.25s ease-in;
+    }
+
+    .tab.active-tab {
+        background: black;
+        color: white;
+    }
+
+    #my-course{
+        font-size: 15px;
+        font-weight: 600;
+
+        height: 60px;
+        max-height: 100px;
+
+        width: 200px;
+        max-width: 300px;
+
+        top: 120px;
+        left: 600px;
+
+        padding: 16px;
+    }
+
+    #fav-course {
+        font-size: 15px;
+        font-weight: 600;
+
+        height: 60px;
+        max-height: 100px;
+
+        width: 200px;
+        max-width: 300px;
+
+        top: 120px;
+        left: 820px;
+
+        padding: 17px;
+
+    }
+
+    /* Favourite CSS*/
+
+    .fa-heart{
+        color: red;
+    }
+
+    .fav-button{
+        position: relative;
+        text-align: center;
+        right: 120px;
+
+        font-size: 20px;
+
+        background: none;
+    }
+
+</style>
+
+<body>
+
+<!-- Navigation bar -->
+<nav>
+    <ul>
+        <li>
+            <a th:href="@{/dashboard}">
+            <button class = "nav-button">
+                <i class="fa-solid fa-house"></i>
+            </button>
+            </a>
+        </li>
+        <li>
+            <!-- Direct to course page -->
+            <a th:href="@{/viewCourses}">
+                <button class = "current-nav-button">
+                    <i class="fa-solid fa-book"></i>
+                </button>
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/viewBadges}">
+                <!--Button that directs to badge page-->
+                <button class = "nav-button">
+                    <i class="fa-solid fa-medal"></i>
+                </button>
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/dailyChallenge}">
+                <button class = "nav-button">
+                    <i class="fa-solid fa-brain"></i>
+                </button>
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/popularpage}">
+                <button class = "nav-button">
+                    <i class="fa-solid fa-fire"></i>
+                </button>
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{/leaderboard}">
+                <button class = "nav-button">
+                    <i class="fa-solid fa-trophy"></i>
+                </button>
+            </a>
+        </li>
+
+        <li>
+            <span th:if="${user.admin}">
+                <a th:href="@{/testanalytics}">
+                    <button class = "nav-button">
+                        <i class="fa-solid fa-code"></i>
+                    </button>
+                </a>
+            </span>
+        </li>
+
+    </ul>
+</nav>
+<div class = "content">
+    <!-- Course related content -->
+    <div id = "course-box">
+        <div id = "course-list-box">
+            <div  id="my-courses" data-tab-content>
+                <div th:each="item : ${courses}">
+                    <div class = "course-card">
+
+                        <span th:if="${item.isFavourite()}">
+                            <form action ="#" th:action="@{/updateFavourite/{id} (id = ${item.getU_courseId()})}" method = "post" th:object="${item}">
+                                <button class="fav-button" type="submit" onclick="toggleFavourite()">
+                                    <i class="fa-solid fa-heart"></i>
+                                </button>
+                            </form>
+                        </span>
+
+                        <span th:unless="${item.isFavourite()}">
+                            <form action ="#" th:action="@{/updateFavourite/{id} (id = ${item.getU_courseId()})}" method = "post" th:object="${item}">
+                                <button class="fav-button" type="submit" onclick="toggleFavourite()">
+                                    <i class="fa-regular fa-heart"></i>
+                                </button>
+                            </form>
+                        </span>
+
+                        <p class="course-name" th:text="${item.getCourse().name}"></p>
+                        <a th:href="@{/viewCoursePage/{id} (id = ${item.getU_courseId()})}">
+                            <button  class="course-button"> View Course </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="fav-courses" data-tab-content>
+                <div th:each="item : ${courses}">
+                    <span th:if="${item.isFavourite()}">
+                        <div class = "course-card">
+                            <form action ="#" th:action="@{/updateFavourite/{id} (id = ${item.getU_courseId()})}" method = "post" th:object="${item}">
+                                <button class="fav-button" type="submit" onclick="toggleFavourite()">
+                                    <i class="fa-solid fa-heart"></i>
+                                </button>
+                            </form>
+
+                            <p class="course-name" th:text="${item.getCourse().name}"></p>
+                            <a th:href="@{/viewCoursePage/{id} (id = ${item.getU_courseId()})}">
+                                <button  class="course-button"> View Course </button>
+                            </a>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class = "tab-header">
+        <ul class="tabs">
+            <li id = "my-course" class = "tab" data-tab-target="#my-courses">  My Courses </li>
+            <li id = "fav-course" class = "tab" data-tab-target="#fav-courses">  Favourite Courses </li>
+        </ul>
+    </div>
+
+
+    <div id="user-info">
+        <p id = "username-text" th:text="${user.getFirstName() + ' ' + user.getLastName()}"></p>
+        <img id = "profile-icon" src="https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg" alt="pfp"/>
+    </div>
+</div>
+
+<script>
+
+    // Set it so when the web page loads, it automatically opens the 'my course' tab
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the tab you want to set as active (e.g., My Courses tab)
+        const defaultTab = document.querySelector('[data-tab-target="#my-courses"]');
+
+        // Trigger a click event on the default tab to set it as active
+        defaultTab.click();
+    });
+
+    // Get the clickable tabs
+    const tabs = document.querySelectorAll('[data-tab-target]')
+
+    // Get the content for specific tabs
+    const tabContents = document.querySelectorAll('[data-tab-content]')
+
+    // Go through each tab so we can make each one be able to respond to a click response
+    tabs.forEach(tab => {
+
+        // Trigger response when clicked
+        tab.addEventListener('click', () => {
+
+            // Remove active styling for all tabs
+            tabs.forEach(t => {
+                t.classList.remove('active-tab')
+            });
+
+            const target = document.querySelector(tab.dataset.tabTarget)
+
+            // active = content will be shown
+            // Go through each content and remove active
+            tabContents.forEach(tabContent => {
+                tabContent.classList.remove('active')
+            })
+
+            // Set target tab content to active to show content
+            target.classList.add('active')
+
+            // Highlights the current tab with active styling
+            tab.classList.add('active-tab');
+
+        })
+
+
+
+    })
+
+    function toggleFavourite(element) {
+        if (element.classList.contains('fa-regular')) {
+            element.classList.remove('fa-regular');
+            element.classList.add('fa-solid');
+
+        } else {
+            element.classList.remove('fa-solid');
+            element.classList.add('fa-regular');
+        }
+    }
+
+</script>
+
+
+</body>
+
+
+</html>

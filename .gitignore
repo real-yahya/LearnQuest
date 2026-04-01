@@ -1,0 +1,55 @@
+# ===========================
+# Video & Large Media Files
+# ===========================
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.wmv
+
+# ===========================
+# Java / Spring Boot
+# ===========================
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# Build output
+build/
+out/
+target/
+
+# ===========================
+# Gradle
+# ===========================
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+
+# ===========================
+# IntelliJ IDEA
+# ===========================
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# ===========================
+# Sensitive Config
+# ===========================
+application-secret.properties
+*.env
+.env
+
+# ===========================
+# OS Files
+# ===========================
+.DS_Store
+Thumbs.db
+Demo Videos (to be stitched together)/
+Sprint 2 Demo Videos/
+(OLD - New in User Manual Directory) User Manual.docx
+(OLD) Sprint2 Demos/

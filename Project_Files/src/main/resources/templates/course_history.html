@@ -1,0 +1,28 @@
+!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<table>
+    <tr>
+        <th>
+            course
+        </th> <th>
+        is complete
+    </th> <th>
+        date finish
+    </th>
+    </tr>
+    <tr th:each="course : ${courses}">
+        <td th:text="${course}"></td> <!-- Assuming 'name' or similar property exists -->
+        <td th:text="${course.complete}"></td>
+        <td th:text="${course.timeEnds}"></td>
+    </tr>
+</table>
+</body>
+</html>

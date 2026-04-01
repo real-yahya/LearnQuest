@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Page</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style media="screen">
+        *,
+        *:before,
+        *:after{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .content-wrapper {
+            display: flex;
+            justify-content: space-between; /* Space items evenly */
+            align-items: flex-start; /* Align items to the top */
+            max-width: 1000px; /* Set a maximum width to prevent excessive stretching */
+            margin: 0 auto; /* Center the content horizontally */
+        }
+
+        .comment-wrapper {
+            width: 45%; /* Adjust width as needed */
+            margin-left: 20px; /* Add some space between course and comments */
+        }
+
+
+        /* Styling for course info */
+        .course_container {
+            background: white;
+            align-content: center;
+            height: 500px;
+            width: 50%; /* Adjust width as needed */
+            margin: 90px auto; /* Centering horizontally */
+            padding: 20px;
+
+            /* Center the content */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+
+            border: 2px solid rgba(0, 0, 0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+        }
+
+        /* Styling for comment form */
+        .comment-form {
+            background: white;
+            border-radius: 10px;
+            height: 200px;
+            width: 500px; /* Adjust width as needed */
+            padding: 20px;
+            margin: 90px auto auto 10px;
+
+            text-align: center;
+
+            /* Center the content */
+            display: flex;
+            justify-content: center;
+
+            border: 2px solid rgba(0, 0, 0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .comment-input-box{
+            width: 400px;
+            height: 100px;
+            overflow: auto;
+            white-space: pre-wrap;
+            text-align: left;
+
+            border: 2px solid rgba(0, 0, 0,0.1);
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+
+            padding: 4px;
+
+        }
+
+
+
+        /* Styling for comment section */
+        .comment-section {
+            background: white;
+            border-radius: 10px;
+            width: 500px;
+            height: 250px;
+            padding: 20px;
+            text-align: left;
+
+            margin: 50px auto auto 10px;
+
+            border: 2px solid rgba(0, 0, 0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+
+            overflow-y: auto; /*Allows us to scroll within the card*/
+            backdrop-filter: blur(10px);
+        }
+
+        .comment-section-text {
+            display: flex;
+            flex-direction: column; /* Align items in a column */
+            justify-content: flex-start; /* Align items to the start */
+            align-items: flex-start; /* Align items to the start */
+            margin-bottom: 10px; /* Add some space between each comment */
+        }
+
+        h6{
+            font-weight: normal;
+        }
+
+    </style>
+</head>
+<body>
+<div class = "content-wrapper">
+<div class="course_container">
+    <!-- Get the name of the course -->
+    <h2 th:text="${course.getCourse().name}" style="text-align: center;"></h2><br>
+
+    <!-- Conditions to check courseStatus attribute [checks if it hasn't been started] -->
+    <span th:if="${#strings.equals(course.getCourseStatus().toString(), 'START')}">
+            <!-- Form with hidden input to call controller method in course service-->
+            <form th:action="@{/updateCourse}" method="post">
+                <input type="hidden" th:name="userCourse" th:value="${course.getU_courseId()}"/>
+                <button type="submit" name="submit">Start Course?</button>
+            </form>
+        </span>
+    <!-- Conditions to check courseStatus attribute [checks if it has been started but not yet finished] -->
+    <span th:if="${#strings.equals(course.getCourseStatus().toString(), 'ONGOING')}">
+            <form th:action="@{/updateCourse}" method="post">
+                <input type="hidden" th:name="userCourse" th:value="${course.getU_courseId()}" />
+                <!-- Should show when user started course -->
+                <h3> Course is currently ongoing </h3>
+                <h4 class = "time-lable"> Start Time : <span class="time-value" th:text="${#temporals.format(course.getTimeStart(), 'HH:mm:ss, dd MMM yyyy')}"></span> </h4>     <br>
+                <button type="submit" name="submit_end">End Course?</button>
+            </form>
+        </span>
+    <!-- Conditions to check courseStatus attribute [checks if it has been finished] -->
+    <span th:if="${#strings.equals(course.getCourseStatus().toString(), 'COMPLETE')}">
+            <h3> Course Completed</h3><br>
+            <h4 class = "time-lable"> Start Time : <span class="time-value" th:text="${#temporals.format(course.getTimeStart(), 'HH:mm:ss, dd MMM yyyy')}"></span> </h4><br>
+            <h4 class = "time-lable"> End Time : <span class="time-value" th:text="${#temporals.format(course.getTimeEnd(), 'HH:mm:ss, dd MMM yyyy')}"></span> </h4>
+        </span>
+</div>
+
+<!-- Comment and Rating Section  -->
+<div class="comment-wrapper">
+    <div class="comment-form">
+        <form action ="#" th:action="@{/commentSubmission/{id} (id = ${course.getU_courseId()})}" method = "post" th:object="${course}">
+            <label class = "comment-form-heading">Post a comment</label></br>
+            <textarea class="comment-input-box" name="comment"></textarea></br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="comment-section">
+        <h2>Comments</h2>
+        <!-- List of all badges users own sent as a model -->
+        <div th:each="item : ${u_courses}">
+                <div class="comment-section-text">
+                    <h5 th:text="${item.getUser().name}"></h5>
+                    <h6 th:text="${item.comment}"></h6>
+                </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+</body>
+</html>

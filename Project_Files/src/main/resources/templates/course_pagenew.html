@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/ea5cbdcda6.js" crossorigin="anonymous"></script>
+    <title>Dashboard Home</title>
+    <style>
+        *,
+        *:before,
+        *:after {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: "IBM Plex Sans", sans-serif;
+            background-color: white;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+        }
+
+
+        @keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+
+        .content-wrapper {
+            position: fixed; /* Change to fixed positioning */
+            top: 0; /* Position it at the top */
+            left: 50%; /* Adjust as needed */
+            transform: translateX(-50%); /* Center horizontally */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Space items evenly */
+            align-items: center; /* Align items to the center */
+            max-width: 1000px; /* Set a maximum width to prevent excessive stretching */
+            margin: 0 auto; /* Center the content horizontally */
+            font-weight: 600;
+            width: 100%; /* Adjust as needed */
+        }
+
+        .top-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            max-width: 1100px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 50px;
+        }
+
+        @keyframes moveUp {
+            0% {
+                transform: translateY(100%);
+            }
+            100% {
+                transform: translateY(0)
+            }
+        }
+
+
+        .title-font {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1px;
+            text-align: center;
+            text-decoration: none;
+            color: black;
+        }
+
+
+        .title-font h1 {
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .secondary-logo {
+            font-weight: 800 !important; /* "!important" makes sure it takes priority */
+        }
+
+
+
+
+        /*REF - https://www.30secondsofcode.org/css/s/hover-underline-animation/ */
+
+        .navbar {
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 5px;
+            margin-top: 0px;
+            font-weight: 600;
+            font-size: 20px;
+            width: 100%;
+        }
+
+
+        .navbar a {
+            color: black;
+            text-align: center;
+            padding: 10px 30px;
+            text-decoration: none;
+            position: relative; /* Add relative positioning */
+        }
+
+
+        .navbar a:hover {
+            color: black;
+        }
+
+
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: black; /* Hover line color */
+            transform-origin: center;
+            transition: transform 0.25s ease-out;
+        }
+
+        .navbar a:hover::after {
+            transform: scaleX(1);
+            transform-origin: center;
+        }
+
+        /* Makes it so the specific nav element is highlighted*/
+        .navbar a:hover::after,
+        .navbar .current-nav::after {
+            transform: scaleX(1);
+            transform-origin: center;
+        }
+
+        button {
+            position: absolute;
+            top: 5%;
+            right: -24%;
+            font-weight: bold;
+            padding: 20px 20px;
+            background-color: white;
+            color: black;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 100;
+            font-size: 20px;
+        }
+
+        button:hover{
+            content: "Log Out";
+            transition: background 0.25s ease-in, color 0.25s ease-in;
+            background: black;
+            color: white;
+        }
+
+
+        button:hover::after {
+            opacity: 1; /* Show the label on hover */
+        }
+
+
+        /*Circle animations*/
+        .background{
+            width: 490px;
+            height: 700px;
+            position: absolute;
+            transform: translate(-50%,-50%);
+            left: 25%;
+            top: -80%;
+            z-index: -100;
+            animation: fadeInAnimation ease 1s, moveUp 1s ease forwards;
+        }
+        .background .shape{
+            height: 200px;
+            width: 200px;
+            position: absolute;
+            border-radius: 50%;
+            animation-name: floating;
+            animation-duration: 5s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            margin-left: 30px;
+            margin-top: 5px;
+        }
+
+        /*Idle float animation*/
+        @keyframes floating {
+            0% { transform: translate(0,  0px); }
+            50%  { transform: translate(0, 20px); }
+            100%   { transform: translate(0, -0px); }
+        }
+
+
+        .shape:nth-child(1){
+            background: linear-gradient(
+                    #1845ad, #23a2f6);
+            left: 60%;
+            top: 50%;
+
+            height: 100px;
+            width: 100px;
+
+        }
+
+        .shape:nth-child(2){
+            background: linear-gradient(
+                    to right,
+                    #4e9cff, #4a00e0);
+            right: -12%;
+            bottom: -2%;
+        }
+
+        .shape:nth-child(3){
+            background: linear-gradient(
+                    to right,
+                    #8e2de2, #4a00e0);
+            right: 60%;
+            bottom: 30%;
+
+            height: 150px;
+            width: 150px;
+        }
+
+        .shape:nth-child(4){
+            background: linear-gradient(
+                    to right,
+                    #64ffda, #00bfa5);
+            right: 60%;
+            bottom: -20%;
+
+            height: 250px;
+            width: 250px;
+        }
+
+        /*Card styling*/
+        .card-comment {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px 30px;
+            width: 500px;
+            height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            left: 50%;
+            top: 105%;
+        }
+
+        .card-course{
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px 30px;
+            width: 500px;
+            height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            left: -10%;
+            top: 140%;
+        }
+
+        .course_action {
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%); /* Center horizontally */
+            font-weight: bold;
+            padding: 10px 20px;
+            background-color: white;
+            color: black;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 230px;
+
+            height: 40px;
+            width: 150px;
+        }
+
+        /* Styling for comment form */
+        .comment-form {
+            border-radius: 10px;
+            height: 200px;
+            width: 500px; /* Adjust width as needed */
+            padding: 20px;
+
+            text-align: left;
+            /* Center the content */
+            display: flex;
+            justify-content: left;
+
+        }
+
+        .comment-input-box{
+            width: 400px;
+            height: 100px;
+            overflow: auto;
+            white-space: pre-wrap;
+            text-align: left;
+
+            border: 2px solid rgba(0, 0, 0,0.1);
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+
+            padding: 4px;
+
+        }
+
+
+
+        /* Styling for comment section */
+        .comment-section {
+            border-radius: 10px;
+            width: 500px;
+            height: 250px;
+            padding: 20px;
+            text-align: left;
+            overflow-y: auto; /*Allows us to scroll within the card*/
+        }
+
+        .comment-section-text {
+            display: flex;
+            flex-direction: column; /* Align items in a column */
+            justify-content: flex-start; /* Align items to the start */
+            align-items: flex-start; /* Align items to the start */
+            margin-bottom: 10px; /* Add some space between each comment */
+        }
+
+        h6{
+            font-weight: normal;
+        }
+
+        .main-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            animation: fadeInAnimation ease 1s;
+            animation-fill-mode: forwards;
+        }
+
+        .card-course,
+        .card-comment {
+            flex: 1; /* Allow cards to grow and shrink within flex container */
+            margin: 10px; /* Adjust margins between and around cards */
+        }
+
+        .submission-button {
+            font-weight: bold;
+            padding: 10px 10px;
+            background-color: white;
+            color: black;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 160px; /* Adjust the margin from the input box */
+
+            text-align: center;
+
+            height: 40px;
+            width: 90px;
+
+            right:10%;
+            bottom: 20%;
+        }
+
+        /* Rating */
+        /* REF - https://codepen.io/hesguru/pen/BaybqXv*/
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .rate {
+            float: left;
+            height: 46px;
+            padding: 0 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(0, 0, 0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .rate:not(:checked) > input {
+            position:absolute;
+            top:-9999px;
+        }
+        .rate:not(:checked) > label {
+            float:right;
+            width:1em;
+            overflow:hidden;
+            white-space:nowrap;
+            cursor:pointer;
+            font-size:30px;
+            color:#ccc;
+        }
+        .rate:not(:checked) > label:before {
+            content: '★ ';
+        }
+        .rate > input:checked ~ label {
+            color: black;
+        }
+        .rate:not(:checked) > label:hover,
+        .rate:not(:checked) > label:hover ~ label {
+            color: black;
+        }
+        .rate > input:checked + label:hover,
+        .rate > input:checked + label:hover ~ label,
+        .rate > input:checked ~ label:hover,
+        .rate > input:checked ~ label:hover ~ label,
+        .rate > label:hover ~ input:checked ~ label {
+            color: black;
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+
+        <a th:href="@{/logout}" >
+            <button title="Log Out" class="logout-button">
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+            </button>
+        </a>
+
+
+        <div class="top-wrapper">
+            <a class="title-font" th:href="@{/dashboard}">
+                <h1>IBM</h1>
+                <h1 class="secondary-logo">SkillsBuild</h1>
+            </a>
+            <div class="navbar">
+                <a class = "current-nav" th:href="@{/viewCourses}">My Courses</a>
+                <a th:href="@{/dailyChallenge}">My Daily Challenge</a>
+                <a th:href="@{/viewBadges}">My Badges</a>
+                <a th:href="@{/popular}">Popular Courses</a>
+            </div>
+        </div>
+    <div class="main-content">
+
+        <div class="card-course">
+            <div class="course_container">
+                            <!-- Get the name of the course -->
+                            <h2 th:text="${course.getCourse().name}" style="text-align: center;"></h2><br>
+
+                            <h2 th:text="${course.getCourseStatus()}"> </h2>
+
+                            <!-- Conditions to check courseStatus attribute [checks if it hasn't been started] -->
+                            <span th:if="${#strings.equals(course.getCourseStatus().toString(), 'START')}">
+                            <!-- Form with hidden input to call controller method in course service-->
+                            <form th:action="@{/updateCourse}" method="post">
+                                <input type="hidden" th:name="userCourse" th:value="${course.getU_courseId()}"/>
+                                <label>PlaceHolder Progress Bar:</label>
+                                <progress value="0" max="100">  </progress>
+                                <button class="course_action" type="submit" name="submit">Start Course?</button>
+                            </form>
+                            </span>
+                                        <!-- Conditions to check courseStatus attribute [checks if it has been started but not yet finished] -->
+                            <span th:unless="${#strings.equals(course.getCourseStatus().toString(), 'START') || #strings.equals(course.getCourseStatus().toString(), 'COMPLETE')}">
+                            <form th:action="@{/updateCourse}" method="post">
+                                <input type="hidden" th:name="userCourse" th:value="${course.getU_courseId()}" />
+                                <!-- Should show when user started course -->
+                                <h3> Course is currently ongoing </h3>
+                                <h4 class = "time-lable"> Start Time : <span class="time-value" th:text="${#temporals.format(course.getTimeStart(), 'HH:mm:ss, dd MMM yyyy')}"></span> </h4><br>
+                                <label>PlaceHolder Progress Bar:</label>
+                                <progress value="50" max="100">  </progress>
+                                <button class="course_action" type="submit" name="submit_end">End Course?</button>
+                            </form>
+                            </span>
+                                        <!-- Conditions to check courseStatus attribute [checks if it has been finished] -->
+                            <span th:if="${#strings.equals(course.getCourseStatus().toString(), 'COMPLETE')}">
+                            <h3> Course Completed</h3><br>
+                            <h4 class = "time-lable"> Start Time : <span class="time-value" th:text="${#temporals.format(course.getTimeStart(), 'HH:mm:ss, dd MMM yyyy')}"></span> </h4><br>
+                            <h4 class = "time-lable"> End Time : <span class="time-value" th:text="${#temporals.format(course.getTimeEnd(), 'HH:mm:ss, dd MMM yyyy')}"></span> </h4>
+                             <label>PlaceHolder Progress Bar:</label>
+                                <progress value="100" max="100">  </progress>
+                            </span>
+                        </div>
+        </div>
+
+        <div class="card-comment">
+            <div class="comment-form">
+                <form action ="#" th:action="@{/commentSubmission/{id} (id = ${course.getU_courseId()})}" method = "post" th:object="${course}">
+                    <label class = "comment-form-heading">Post a comment</label></br>
+                    <textarea class="comment-input-box" name="comment"></textarea></br>
+                    <input type="hidden" name="rating" id="rating" value="1">
+                    <!-- Rating System -->
+                    <!-- REF - https://codepen.io/hesguru/pen/BaybqXv -->
+                    <div class="rate">
+                        <input type="radio" id="star5" name="rate" value="5" onclick="setRating(5)"/>
+                        <label for="star5" title="5 Stars">5 stars</label>
+                        <input type="radio" id="star4" name="rate" value="4" onclick="setRating(4)" />
+                        <label for="star4" title="4 Stars">4 stars</label>
+                        <input type="radio" id="star3" name="rate" value="3" onclick="setRating(3)"/>
+                        <label for="star3" title="3 Stars">3 stars</label>
+                        <input type="radio" id="star2" name="rate" value="2" onclick="setRating(2)"/>
+                        <label for="star2" title="2 Stars">2 stars</label>
+                        <input type="radio" id="star1" name="rate" value="1" onclick="setRating(1)"/>
+                        <label for="star1" title="1 Star">1 star</label>
+                    </div>
+
+                    <!-- When use clicks on a star, the rating changes in this function -->
+                    <script>
+                        function setRating(value) {
+                            document.getElementById('rating').value = value;
+                        }
+                    </script>
+
+                    <button class = "submission-button" type="submit">Submit</button>
+                </form>
+            </div>
+            <div class="comment-section">
+                <h2>Comments</h2>
+                <!-- List of all courses that a user has taken -->
+                <div th:each="item : ${u_courses}">
+                    <div class="comment-section-text">
+                        <h5 th:text="${item.getUser().name}"></h5>
+                        <!-- Showing the rating of the courses by the specific user-->
+                        <!-- Gets integer value from rating attribute to check condition -->
+                        <span th:switch="${item.getRating()}">
+                        <h5 th:case="1">★</h5>
+                        <h5 th:case="2">★★</h5>
+                        <h5 th:case="3">★★★</h5>
+                        <h5 th:case="4">★★★★</h5>
+                        <h5 th:case="5">★★★★★</h5>
+                        </span>
+                        <h6 th:text="${item.getComment()}"></h6>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+</div>
+</body>
+</html>
