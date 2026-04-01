@@ -98,9 +98,11 @@ Testing documentation is in the `/Testing` directory, covering:
 
 ## My Contribution
 
-**Yahya Mukhtar (ym196)** — Progress Bar & Course Completion Tracking
+**Yahya Mohamed (ym196)** — Login Page (Frontend) & Progress Bar (Design + Implementation)
 
-Designed and implemented the end-to-end course progress system, allowing users to navigate from the dashboard to a course page, progress through individual tasks, and complete courses. Course completion is a hard requirement for unlocking ratings and comments, making this a core feature that the rest of the platform depends on.
+**Login Page:** Built the frontend for the login and registration system, designing the UI and ensuring a clean, user-friendly entry point into the platform.
+
+**Progress Bar:** Designed and implemented the end-to-end course progress system — both the visual UI and the underlying logic — allowing users to navigate from the dashboard to a course page, progress through individual tasks, and have their completion tracked. Course completion is a hard requirement for unlocking the ratings and comments system, making this a core feature that the rest of the platform depends on.
 
 ---
 
@@ -110,7 +112,7 @@ Built by a team of 9 developers working in an Agile Scrum environment across 2 s
 
 | Feature | Developer |
 |---|---|
-| **Progress Bar** | **Yahya Mukhtar (ym196)** |
+| **Login Page & Progress Bar** | **Yahya Mohamed (ym196)** |
 | Dashboard Revision | ar581 |
 | Favourites Tab | aa1376 |
 | Comments & Ratings | yz658 |
