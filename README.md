@@ -102,7 +102,7 @@ Testing documentation is in the `/Testing` directory, covering:
 
 **Login Page:** Built the frontend for the login and registration system, designing the UI and ensuring a clean, user-friendly entry point into the platform.
 
-**Progress Bar:** Designed and implemented the end-to-end course progress system — both the visual UI and the underlying logic — allowing users to navigate from the dashboard to a course page, progress through individual tasks, and have their completion tracked. Course completion is a hard requirement for unlocking the ratings and comments system, making this a core feature that the rest of the platform depends on.
+**Progress Bar:** Designed and implemented the progress bar feature, allowing users to track how far they have completed a course.
 
 ---
 
